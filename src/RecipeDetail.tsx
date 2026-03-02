@@ -44,19 +44,20 @@ export function RecipeDetail({ id, onBack }: RecipeDetailProps) {
           <h2 className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-3">
             Ingredients
           </h2>
-          <ul className="bg-white rounded-xl border border-stone-200 divide-y divide-stone-100">
-            {recipe.ingredients.map((ing, i) => (
-              <li
-                key={i}
-                className="flex items-center justify-between px-5 py-3 text-sm"
-              >
-                <span className="font-medium">{ing.name}</span>
-                <span className="text-stone-400">
-                  {ing.amount} {ing.unit}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <table className="text-sm">
+            <tbody>
+              {recipe.ingredients.map((ing, i) => (
+                <tr key={i}>
+                  <td className="py-1.5 pr-8 text-stone-400 w-0 whitespace-nowrap">
+                    {ing.amount} {ing.unit}
+                  </td>
+                  <td className="pr-5 py-1.5 font-medium">
+                    {ing.name}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
 
         <section>

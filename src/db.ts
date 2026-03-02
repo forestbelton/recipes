@@ -3,71 +3,88 @@ import type { Recipe } from "./types";
 
 let dbPromise: Promise<Database> | null = null;
 
+async function loadDb(): Promise<Database> {
+  const [SQL, buffer] = await Promise.all([
+    initSqlJs({ locateFile: (file) => `/${file}` }),
+    fetch("/recipes.db").then((res) => {
+      if (!res.ok) throw new Error(`Failed to fetch recipes.db: ${res.status}`);
+      const ct = res.headers.get("content-type") ?? "";
+      if (ct.includes("text/html")) {
+        throw new Error(`recipes.db returned HTML — file may be missing from public/`);
+      }
+      return res.arrayBuffer();
+    }),
+  ]);
+  return new SQL.Database(new Uint8Array(buffer));
+}
+
 function getDb(): Promise<Database> {
   if (!dbPromise) {
-    dbPromise = initSqlJs({
-      locateFile: (file) => `/${file}`,
-    }).then(async (SQL) => {
-      const response = await fetch("/recipes.db");
-      const buffer = await response.arrayBuffer();
-      return new SQL.Database(new Uint8Array(buffer));
+    dbPromise = loadDb().catch((err) => {
+      dbPromise = null;
+      throw err;
     });
   }
   return dbPromise;
 }
 
-function buildRecipes(db: Database, whereClause: string, params: Record<string, string> = {}): Recipe[] {
-  const rows = db.exec(
-    `SELECT r.id, r.created_at, r.name, r.source,
+interface RecipeRow {
+  id: string;
+  created_at: string;
+  name: string;
+  source: string | null;
+  ing_name: string | null;
+  amount: number | null;
+  unit: string | null;
+  step_number: number | null;
+  step_content: string | null;
+}
+
+function buildRecipes(db: Database, whereClause: string, params?: Record<string, string>): Recipe[] {
+  const sql = `SELECT r.id, r.created_at, r.name, r.source,
             ri.name AS ing_name, ri.amount, ri.unit,
             rs.step_number, rs.step_content
      FROM recipe r
      LEFT JOIN recipe_ingredients ri ON ri.recipe_id = r.id
      LEFT JOIN recipe_steps rs ON rs.recipe_id = r.id
      ${whereClause}
-     ORDER BY r.name, rs.step_number`,
-    params,
-  );
+     ORDER BY r.name, rs.step_number`;
 
-  if (rows.length === 0) return [];
-
-  const result = rows[0];
-  const cols = result.columns;
-  const idx = Object.fromEntries(cols.map((c, i) => [c, i]));
+  const stmt = db.prepare(sql);
+  if (params) stmt.bind(params);
 
   const recipesMap = new Map<string, Recipe>();
 
-  for (const row of result.values) {
-    const id = row[idx["id"]] as string;
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as unknown as RecipeRow;
 
-    if (!recipesMap.has(id)) {
-      recipesMap.set(id, {
-        id,
-        createdAt: row[idx["created_at"]] as string,
-        name: row[idx["name"]] as string,
-        source: row[idx["source"]] as string | null,
+    if (!recipesMap.has(row.id)) {
+      recipesMap.set(row.id, {
+        id: row.id,
+        createdAt: row.created_at,
+        name: row.name,
+        source: row.source,
         ingredients: [],
         steps: [],
       });
     }
 
-    const recipe = recipesMap.get(id)!;
+    const recipe = recipesMap.get(row.id)!;
 
-    const ingName = row[idx["ing_name"]];
-    if (ingName != null && !recipe.ingredients.some((i) => i.name === ingName)) {
+    if (row.ing_name != null && !recipe.ingredients.some((i) => i.name === row.ing_name)) {
       recipe.ingredients.push({
-        name: ingName as string,
-        amount: row[idx["amount"]] as number,
-        unit: row[idx["unit"]] as string,
+        name: row.ing_name,
+        amount: row.amount!,
+        unit: row.unit!,
       });
     }
 
-    const stepContent = row[idx["step_content"]];
-    if (stepContent != null && !recipe.steps.includes(stepContent as string)) {
-      recipe.steps.push(stepContent as string);
+    if (row.step_content != null && !recipe.steps.includes(row.step_content)) {
+      recipe.steps.push(row.step_content);
     }
   }
 
+  stmt.free();
   return [...recipesMap.values()];
 }
 

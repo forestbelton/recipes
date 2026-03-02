@@ -19,7 +19,7 @@ interface RecipeYaml {
   additional_time_minutes: number;
   servings: number;
   yield: string;
-  ingredients: { name: string; amount: number; unit: string }[];
+  ingredients: { name: string; amount: string; unit: string }[];
   steps: string[];
 }
 
@@ -66,8 +66,11 @@ function validateRecipe(data: unknown, filename: string): RecipeYaml {
     if (typeof ingObj.name !== "string" || ingObj.name.length === 0) {
       throw new Error(`${filename}: ingredients[${i}].name must be a non-empty string`);
     }
-    if (typeof ingObj.amount !== "number" || isNaN(ingObj.amount)) {
-      throw new Error(`${filename}: ingredients[${i}].amount must be a number`);
+    if (typeof ingObj.amount === "number") {
+      ingObj.amount = String(ingObj.amount);
+    }
+    if (typeof ingObj.amount !== "string" || ingObj.amount.length === 0) {
+      throw new Error(`${filename}: ingredients[${i}].amount must be a non-empty string`);
     }
     if (typeof ingObj.unit !== "string") {
       throw new Error(`${filename}: ingredients[${i}].unit must be a string`);

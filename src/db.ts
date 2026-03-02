@@ -39,7 +39,7 @@ interface RecipeRow {
   servings: number;
   yield: string;
   ing_name: string | null;
-  amount: number | null;
+  amount: string | null;
   unit: string | null;
   step_number: number | null;
   step_content: string | null;

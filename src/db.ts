@@ -33,6 +33,11 @@ interface RecipeRow {
   created_at: string;
   name: string;
   source: string | null;
+  prep_time_minutes: number;
+  cook_time_minutes: number;
+  additional_time_minutes: number;
+  servings: number;
+  yield: string;
   ing_name: string | null;
   amount: number | null;
   unit: string | null;
@@ -42,6 +47,8 @@ interface RecipeRow {
 
 function buildRecipes(db: Database, whereClause: string, params?: Record<string, string>): Recipe[] {
   const sql = `SELECT r.id, r.created_at, r.name, r.source,
+            r.prep_time_minutes, r.cook_time_minutes, r.additional_time_minutes,
+            r.servings, r.yield,
             ri.name AS ing_name, ri.amount, ri.unit,
             rs.step_number, rs.step_content
      FROM recipe r
@@ -64,6 +71,11 @@ function buildRecipes(db: Database, whereClause: string, params?: Record<string,
         createdAt: row.created_at,
         name: row.name,
         source: row.source,
+        prepTimeMinutes: row.prep_time_minutes,
+        cookTimeMinutes: row.cook_time_minutes,
+        additionalTimeMinutes: row.additional_time_minutes,
+        servings: row.servings,
+        yield: row.yield,
         ingredients: [],
         steps: [],
       });

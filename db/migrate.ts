@@ -14,6 +14,11 @@ const WASM_DEST = join(PUBLIC_DIR, "sql-wasm-browser.wasm");
 interface RecipeYaml {
   name: string;
   source?: string | null;
+  prep_time_minutes: number;
+  cook_time_minutes: number;
+  additional_time_minutes: number;
+  servings: number;
+  yield: string;
   ingredients: { name: string; amount: number; unit: string }[];
   steps: string[];
 }
@@ -31,6 +36,22 @@ function validateRecipe(data: unknown, filename: string): RecipeYaml {
 
   if (obj.source !== undefined && obj.source !== null && typeof obj.source !== "string") {
     throw new Error(`${filename}: "source" must be a string or null`);
+  }
+
+  if (typeof obj.prep_time_minutes !== "number" || !Number.isInteger(obj.prep_time_minutes)) {
+    throw new Error(`${filename}: "prep_time_minutes" must be an integer`);
+  }
+  if (typeof obj.cook_time_minutes !== "number" || !Number.isInteger(obj.cook_time_minutes)) {
+    throw new Error(`${filename}: "cook_time_minutes" must be an integer`);
+  }
+  if (typeof obj.additional_time_minutes !== "number" || !Number.isInteger(obj.additional_time_minutes)) {
+    throw new Error(`${filename}: "additional_time_minutes" must be an integer`);
+  }
+  if (typeof obj.servings !== "number" || !Number.isInteger(obj.servings)) {
+    throw new Error(`${filename}: "servings" must be an integer`);
+  }
+  if (typeof obj.yield !== "string") {
+    throw new Error(`${filename}: "yield" must be a string`);
   }
 
   if (!Array.isArray(obj.ingredients) || obj.ingredients.length === 0) {
@@ -99,11 +120,19 @@ async function migrate() {
       const recipe = validateRecipe(data, file);
 
       const recipeId = randomUUID();
-      db.run("INSERT INTO recipe (id, name, source) VALUES (?, ?, ?)", [
-        recipeId,
-        recipe.name,
-        recipe.source ?? null,
-      ]);
+      db.run(
+        "INSERT INTO recipe (id, name, source, prep_time_minutes, cook_time_minutes, additional_time_minutes, servings, yield) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          recipeId,
+          recipe.name,
+          recipe.source ?? null,
+          recipe.prep_time_minutes,
+          recipe.cook_time_minutes,
+          recipe.additional_time_minutes,
+          recipe.servings,
+          recipe.yield,
+        ],
+      );
 
       for (const [i, step] of recipe.steps.entries()) {
         db.run(

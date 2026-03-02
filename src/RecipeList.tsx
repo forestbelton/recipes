@@ -3,21 +3,23 @@ import type { Recipe } from "./types";
 
 interface RecipeListProps {
   recipes: Recipe[];
-  onSelect: (recipe: Recipe) => void;
+  onSelect: (id: string) => void;
 }
 
 export function RecipeList({ recipes, onSelect }: RecipeListProps) {
   const [search, setSearch] = useState("");
 
   const filtered = recipes.filter((r) =>
-    r.title.toLowerCase().includes(search.toLowerCase())
+    r.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-800">
       <header className="bg-white border-b border-stone-200 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold tracking-tight mb-4">Recipes</h1>
+          <h1 className="text-3xl font-bold tracking-tight mb-4 text-center">
+            recipes
+          </h1>
           <input
             type="text"
             placeholder="Search recipes..."
@@ -36,11 +38,11 @@ export function RecipeList({ recipes, onSelect }: RecipeListProps) {
             {filtered.map((recipe) => (
               <li key={recipe.id}>
                 <button
-                  onClick={() => onSelect(recipe)}
-                  className="w-full text-left bg-white rounded-xl border border-stone-200 px-5 py-4 hover:border-amber-400 hover:shadow-sm transition group"
+                  onClick={() => onSelect(recipe.id)}
+                  className="w-full text-left bg-white rounded-xl border border-stone-200 px-5 py-4 hover:border-amber-400 hover:shadow-sm transition group cursor-pointer"
                 >
                   <span className="text-lg font-semibold group-hover:text-amber-700 transition-colors">
-                    {recipe.title}
+                    {recipe.name}
                   </span>
                   <span className="block text-sm text-stone-400 mt-1">
                     {recipe.ingredients.length} ingredients &middot;{" "}

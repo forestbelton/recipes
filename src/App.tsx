@@ -1,51 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RecipeList } from "./RecipeList";
 import { RecipeDetail } from "./RecipeDetail";
+import { allRecipes } from "./db";
 import type { Recipe } from "./types";
 
-const sampleRecipes: Recipe[] = [
-  {
-    id: "1",
-    title: "Pancakes",
-    ingredients: [
-      { name: "flour", amount: 1.5, unit: "cups" },
-      { name: "milk", amount: 1.25, unit: "cups" },
-      { name: "egg", amount: 1, unit: "" },
-      { name: "butter", amount: 3, unit: "tbsp" },
-    ],
-    steps: [
-      "Mix dry ingredients in a bowl.",
-      "Whisk in milk, egg, and melted butter until smooth.",
-      "Heat a skillet over medium heat and grease lightly.",
-      "Pour batter and cook until bubbles form, then flip.",
-    ],
-  },
-  {
-    id: "2",
-    title: "Tomato Soup",
-    ingredients: [
-      { name: "canned tomatoes", amount: 2, unit: "cans" },
-      { name: "onion", amount: 1, unit: "" },
-      { name: "garlic", amount: 3, unit: "cloves" },
-      { name: "vegetable broth", amount: 2, unit: "cups" },
-    ],
-    steps: [
-      "Saut\u00e9 diced onion and garlic until soft.",
-      "Add tomatoes and broth, bring to a simmer.",
-      "Cook for 20 minutes, then blend until smooth.",
-      "Season with salt and pepper to taste.",
-    ],
-  },
-];
-
 function App() {
-  const [selected, setSelected] = useState<Recipe | null>(null);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (selected) {
-    return <RecipeDetail recipe={selected} onBack={() => setSelected(null)} />;
+  useEffect(() => {
+    allRecipes().then((r) => {
+      setRecipes(r);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center text-stone-400">
+        Loading...
+      </div>
+    );
   }
 
-  return <RecipeList recipes={sampleRecipes} onSelect={setSelected} />;
+  if (selectedId) {
+    return <RecipeDetail id={selectedId} onBack={() => setSelectedId(null)} />;
+  }
+
+  return <RecipeList recipes={recipes} onSelect={setSelectedId} />;
 }
 
 export default App;

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+public/recipes.db
+public/sql-wasm-browser.wasm

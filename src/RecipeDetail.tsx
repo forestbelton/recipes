@@ -1,18 +1,34 @@
+import { useEffect, useState } from "react";
+import { getRecipeByUuid } from "./db";
 import type { Recipe } from "./types";
 
 interface RecipeDetailProps {
-  recipe: Recipe;
+  id: string;
   onBack: () => void;
 }
 
-export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
+export function RecipeDetail({ id, onBack }: RecipeDetailProps) {
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
+
+  useEffect(() => {
+    getRecipeByUuid(id).then(setRecipe);
+  }, [id]);
+
+  if (!recipe) {
+    return (
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center text-stone-400">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-stone-50 text-stone-800">
       <header className="bg-white border-b border-stone-200">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <button
             onClick={onBack}
-            className="text-sm text-stone-500 hover:text-amber-700 transition-colors"
+            className="text-sm text-stone-500 hover:text-amber-700 transition-colors cursor-pointer"
           >
             &larr; Back to recipes
           </button>
@@ -21,7 +37,7 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
 
       <main className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold tracking-tight mb-8">
-          {recipe.title}
+          {recipe.name}
         </h1>
 
         <section className="mb-10">
@@ -30,7 +46,10 @@ export function RecipeDetail({ recipe, onBack }: RecipeDetailProps) {
           </h2>
           <ul className="bg-white rounded-xl border border-stone-200 divide-y divide-stone-100">
             {recipe.ingredients.map((ing, i) => (
-              <li key={i} className="flex items-center justify-between px-5 py-3 text-sm">
+              <li
+                key={i}
+                className="flex items-center justify-between px-5 py-3 text-sm"
+              >
                 <span className="font-medium">{ing.name}</span>
                 <span className="text-stone-400">
                   {ing.amount} {ing.unit}

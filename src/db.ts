@@ -5,8 +5,8 @@ let dbPromise: Promise<Database> | null = null;
 
 async function loadDb(): Promise<Database> {
   const [SQL, buffer] = await Promise.all([
-    initSqlJs({ locateFile: (file) => `/${file}` }),
-    fetch("/recipes.db").then((res) => {
+    initSqlJs({ locateFile: (file) => `${import.meta.env.BASE_URL}${file}` }),
+    fetch(`${import.meta.env.BASE_URL}recipes.db`).then((res) => {
       if (!res.ok) throw new Error(`Failed to fetch recipes.db: ${res.status}`);
       const ct = res.headers.get("content-type") ?? "";
       if (ct.includes("text/html")) {

@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+# Recipes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A client-side recipe browser built with React, TypeScript, and SQLite (via sql.js/WASM). Recipes are stored as YAML files, compiled into a SQLite database at build time, and served as a static single-page application.
 
-Currently, two official plugins are available:
+**[View the app](https://github.forestbelton.io/recipes)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- Browse and search recipes by name
+- View ingredients, step-by-step instructions, and timing details
+- Fully client-side — no backend required
+- SQLite database runs in the browser via WebAssembly
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Getting Started
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run db:migrate   # Build the SQLite database from YAML recipes
+npm run dev          # Start the dev server
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Adding Recipes
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Add a YAML file to `db/recipes/`:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```yaml
+name: Recipe Name
+source: https://example.com
+prep_time_minutes: 20
+cook_time_minutes: 50
+additional_time_minutes: 0
+servings: 8
+yield: "1 (9-inch) pie"
+ingredients:
+  - name: Ingredient
+    amount: "1"
+    unit: cups
+steps:
+  - First step
+  - Second step
 ```
+
+Then run `npm run db:migrate` to rebuild the database.
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run db:migrate` | Generate SQLite database from YAML recipes and SQL migrations |
+| `npm run lint` | Run ESLint |
+| `npm run preview` | Preview production build locally |

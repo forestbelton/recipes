@@ -2,6 +2,19 @@ import { useEffect, useState } from "react";
 import { getRecipeByUuid } from "./db";
 import type { Recipe } from "./types";
 
+const unicodeFractions: Record<string, string> = {
+  "1/2": "\u00BD", "1/3": "\u2153", "2/3": "\u2154",
+  "1/4": "\u00BC", "3/4": "\u00BE", "1/5": "\u2155",
+  "2/5": "\u2156", "3/5": "\u2157", "4/5": "\u2158",
+  "1/6": "\u2159", "5/6": "\u215A", "1/7": "\u2150",
+  "1/8": "\u215B", "3/8": "\u215C", "5/8": "\u215D",
+  "7/8": "\u215E", "1/9": "\u2151", "1/10": "\u2152",
+};
+
+function formatAmount(amount: string): string {
+  return amount.replace(/\d+\/\d+/g, (m) => unicodeFractions[m] ?? m);
+}
+
 function formatDuration(minutes: number): string {
   if (minutes === 0) return "—";
   const h = Math.floor(minutes / 60);
@@ -93,7 +106,7 @@ export function RecipeDetail({ id, onBack }: RecipeDetailProps) {
               {recipe.ingredients.map((ing, i) => (
                 <tr key={i}>
                   <td className="py-1.5 pr-8 text-stone-400 w-0 whitespace-nowrap">
-                    {ing.amount} {ing.unit}
+                    {formatAmount(ing.amount)} {ing.unit}
                   </td>
                   <td className="pr-5 py-1.5 font-medium">
                     {ing.name}

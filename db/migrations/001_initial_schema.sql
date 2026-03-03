@@ -6,14 +6,14 @@ CREATE TABLE recipe (
 );
 
 CREATE TABLE recipe_steps (
-  id TEXT PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   recipe_id TEXT NOT NULL REFERENCES recipe(id),
   step_number INTEGER NOT NULL,
   step_content TEXT NOT NULL
 );
 
 CREATE TABLE recipe_ingredients (
-  id TEXT PRIMARY KEY,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   recipe_id TEXT NOT NULL REFERENCES recipe(id),
   name TEXT NOT NULL,
   amount REAL NOT NULL,

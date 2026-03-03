@@ -1,8 +1,29 @@
 import initSqlJs from "sql.js";
 import { copyFileSync, readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { randomUUID } from "node:crypto";
+import { createHash } from "node:crypto";
 import { parse } from "yaml";
+
+// Namespace UUID for recipe IDs (generated once, never changes)
+const NAMESPACE = "f47ac10b-58cc-4372-a567-0d02b2c3d479";
+
+/**
+ * Generate a deterministic UUID from a name string.
+ * Uses SHA-256 of namespace + name, formatted as a v4-style UUID.
+ * This ensures the same name always produces the same UUID across rebuilds.
+ */
+function deterministicUUID(name: string): string {
+  const hash = createHash("sha256")
+    .update(NAMESPACE + name)
+    .digest("hex");
+  return [
+    hash.slice(0, 8),
+    hash.slice(8, 12),
+    hash.slice(12, 16),
+    hash.slice(16, 20),
+    hash.slice(20, 32),
+  ].join("-");
+}
 
 const MIGRATIONS_DIR = join(import.meta.dirname, "migrations");
 const RECIPES_DIR = join(import.meta.dirname, "recipes");
@@ -122,7 +143,7 @@ async function migrate() {
       const data = parse(raw);
       const recipe = validateRecipe(data, file);
 
-      const recipeId = randomUUID();
+      const recipeId = deterministicUUID(recipe.name);
       db.run(
         "INSERT INTO recipe (id, name, source, prep_time_minutes, cook_time_minutes, additional_time_minutes, servings, yield) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         [
@@ -139,15 +160,15 @@ async function migrate() {
 
       for (const [i, step] of recipe.steps.entries()) {
         db.run(
-          "INSERT INTO recipe_steps (id, recipe_id, step_number, step_content) VALUES (?, ?, ?, ?)",
-          [randomUUID(), recipeId, i + 1, step],
+          "INSERT INTO recipe_steps (recipe_id, step_number, step_content) VALUES (?, ?, ?)",
+          [recipeId, i + 1, step],
         );
       }
 
       for (const ing of recipe.ingredients) {
         db.run(
-          "INSERT INTO recipe_ingredients (id, recipe_id, name, amount, unit) VALUES (?, ?, ?, ?, ?)",
-          [randomUUID(), recipeId, ing.name, ing.amount, ing.unit],
+          "INSERT INTO recipe_ingredients (recipe_id, name, amount, unit) VALUES (?, ?, ?, ?)",
+          [recipeId, ing.name, ing.amount, ing.unit],
         );
       }
 

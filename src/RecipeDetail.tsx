@@ -110,11 +110,11 @@ export function RecipeDetail({ id, onBack }: RecipeDetailProps) {
           </h2>
           <ol className="space-y-4">
             {recipe.steps.map((step, i) => (
-              <li key={i} className="flex gap-4">
+              <li key={i} className="flex items-start gap-4">
                 <span className="flex-none w-7 h-7 rounded-full bg-amber-100 text-amber-700 text-sm font-semibold flex items-center justify-center">
                   {i + 1}
                 </span>
-                <p className="text-sm leading-relaxed pt-1">{step}</p>
+                <p className="text-sm leading-relaxed pt-[2px]">{step}</p>
               </li>
             ))}
           </ol>

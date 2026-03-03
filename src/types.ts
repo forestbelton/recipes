@@ -12,8 +12,8 @@ export interface Recipe {
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   additionalTimeMinutes: number;
-  servings: number;
-  yield: string;
+  servings: string;
+  yield: string | null;
   ingredients: Ingredient[];
   steps: string[];
 }

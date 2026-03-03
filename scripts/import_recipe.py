@@ -242,8 +242,6 @@ def format_yaml(recipe):
     yield_val = recipe.get("yield", "")
     if yield_val:
         lines.append(f'yield: "{yield_val}"')
-    else:
-        lines.append('yield: ""')
 
     lines.append("ingredients:")
     for ing in recipe["ingredients"]:
@@ -331,12 +329,12 @@ def build_recipe(data, url):
     if isinstance(recipe_yield, str):
         recipe_yield = [recipe_yield]
 
-    servings = 0
+    servings = ""
     yield_str = ""
     for item in recipe_yield:
         item_str = str(item).strip()
-        if item_str.isdigit() and servings == 0:
-            servings = int(item_str)
+        if item_str.isdigit() and not servings:
+            servings = item_str
         elif not item_str.isdigit():
             yield_str = item_str
 

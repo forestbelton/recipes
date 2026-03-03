@@ -38,8 +38,8 @@ interface RecipeYaml {
   prep_time_minutes: number;
   cook_time_minutes: number;
   additional_time_minutes: number;
-  servings: number;
-  yield: string;
+  servings: string;
+  yield?: string | null;
   ingredients: { name: string; amount: string; unit: string }[];
   steps: string[];
 }
@@ -68,11 +68,12 @@ function validateRecipe(data: unknown, filename: string): RecipeYaml {
   if (typeof obj.additional_time_minutes !== "number" || !Number.isInteger(obj.additional_time_minutes)) {
     throw new Error(`${filename}: "additional_time_minutes" must be an integer`);
   }
-  if (typeof obj.servings !== "number" || !Number.isInteger(obj.servings)) {
-    throw new Error(`${filename}: "servings" must be an integer`);
+  if (obj.servings === undefined || obj.servings === null) {
+    throw new Error(`${filename}: "servings" is required`);
   }
-  if (typeof obj.yield !== "string") {
-    throw new Error(`${filename}: "yield" must be a string`);
+  obj.servings = String(obj.servings);
+  if (obj.yield !== undefined && obj.yield !== null && typeof obj.yield !== "string") {
+    throw new Error(`${filename}: "yield" must be a string or null`);
   }
 
   if (!Array.isArray(obj.ingredients) || obj.ingredients.length === 0) {
@@ -154,7 +155,7 @@ async function migrate() {
           recipe.cook_time_minutes,
           recipe.additional_time_minutes,
           recipe.servings,
-          recipe.yield,
+          recipe.yield ?? null,
         ],
       );
 

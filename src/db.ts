@@ -36,8 +36,8 @@ interface RecipeRow {
   prep_time_minutes: number;
   cook_time_minutes: number;
   additional_time_minutes: number;
-  servings: number;
-  yield: string;
+  servings: string;
+  yield: string | null;
   ing_name: string | null;
   amount: string | null;
   unit: string | null;

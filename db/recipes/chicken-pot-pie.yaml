@@ -8,7 +8,7 @@ yield: "1 (9-inch) pie"
 ingredients:
   - name: skinless, boneless chicken breasts, cubed
     amount: 1
-    unit: pounds
+    unit: lbs
   - name: sliced carrots
     amount: 1
     unit: cups

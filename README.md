@@ -2,7 +2,7 @@
 
 A client-side recipe browser built with React, TypeScript, and SQLite (via sql.js/WASM). Recipes are stored as YAML files, compiled into a SQLite database at build time, and served as a static single-page application.
 
-**[View the app](https://github.forestbelton.io/recipes)**
+**[View the app](https://forestbelton.github.io/recipes)**
 
 ## Features
 
@@ -44,10 +44,10 @@ Then run `npm run db:migrate` to rebuild the database.
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Production build |
+| Command              | Description                                                   |
+| -------------------- | ------------------------------------------------------------- |
+| `npm run dev`        | Start development server                                      |
+| `npm run build`      | Production build                                              |
 | `npm run db:migrate` | Generate SQLite database from YAML recipes and SQL migrations |
-| `npm run lint` | Run ESLint |
-| `npm run preview` | Preview production build locally |
+| `npm run lint`       | Run ESLint                                                    |
+| `npm run preview`    | Preview production build locally                              |

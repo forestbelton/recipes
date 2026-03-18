@@ -30,6 +30,7 @@ jobs:
       - run: npm ci
       - run: npm run db:migrate
       - run: npm run build
+      - run: npm run generate-pages
 
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -4,15 +4,26 @@ import { RecipeDetail } from "./RecipeDetail";
 import { allRecipes } from "./db";
 import type { Recipe } from "./types";
 
-function parseHash(): string | null {
-  const match = location.hash.match(/^#\/recipe\/(.+)$/);
+const BASE = import.meta.env.BASE_URL;
+
+function parsePath(): string | null {
+  const match = location.pathname.match(new RegExp(`^${BASE}recipe/(.+?)/?$`));
   return match ? match[1] : null;
 }
 
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [selectedId, setSelectedId] = useState<string | null>(parseHash);
+  const [selectedId, setSelectedId] = useState<string | null>(parsePath);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Redirect legacy hash URLs to path-based URLs
+    const hashMatch = location.hash.match(/^#\/recipe\/(.+)$/);
+    if (hashMatch) {
+      history.replaceState(null, "", `${BASE}recipe/${hashMatch[1]}`);
+      setSelectedId(hashMatch[1]);
+    }
+  }, []);
 
   useEffect(() => {
     allRecipes().then((r) => {
@@ -22,16 +33,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const onHashChange = () => setSelectedId(parseHash());
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
+    const onPopState = () => setSelectedId(parsePath());
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
   function selectRecipe(id: string | null) {
     if (id) {
-      location.hash = `#/recipe/${id}`;
+      history.pushState(null, "", `${BASE}recipe/${id}`);
     } else {
-      history.pushState(null, "", location.pathname + location.search);
+      history.pushState(null, "", BASE);
     }
     setSelectedId(id);
   }

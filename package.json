@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "db:migrate": "npx tsx db/migrate.ts"
+    "db:migrate": "npx tsx db/migrate.ts",
+    "generate-pages": "npx tsx db/generate-pages.ts"
   },
   "dependencies": {
     "react": "^19.2.0",

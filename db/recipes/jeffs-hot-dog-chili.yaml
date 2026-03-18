@@ -1,0 +1,43 @@
+name: Jeff's Hot Dog Chili
+source: https://www.allrecipes.com/recipe/223538/jeffs-hot-dog-chili/
+prep_time_minutes: 10
+cook_time_minutes: 20
+additional_time_minutes: 0
+servings: 6
+ingredients:
+  - name: ground beef
+    amount: 1
+    unit: lbs
+  - name: water
+    amount: 1/3
+    unit: cups
+  - name: tomato sauce
+    amount: 5
+    unit: oz
+  - name: ketchup
+    amount: 1/2
+    unit: cups
+  - name: chili powder
+    amount: 2 1/2
+    unit: tsp
+  - name: salt
+    amount: 1/2
+    unit: tsp
+  - name: ground black pepper
+    amount: 1/2
+    unit: tsp
+  - name: white sugar
+    amount: 1/2
+    unit: tsp
+  - name: onion powder
+    amount: 1/2
+    unit: tsp
+  - name: Worchestershire sauce
+    amount: 1
+    unit: dash
+steps:
+  - Gather all ingredients.
+  - Place ground beef and water in a large saucepan; use a potato masher to break apart beef.
+  - Stir in tomato sauce, ketchup, chili powder, salt, black pepper, sugar, onion powder, and Worcestershire sauce.
+  - Bring to a boil, then simmer over medium heat until beef is cooked and chili thickens, about 20 minutes.
+  - Serve over hot dogs and enjoy!

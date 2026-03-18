@@ -63,7 +63,7 @@ async function generate() {
     parts.push(`${recipe.step_count} steps`);
     const description = parts.join(" · ");
 
-    const url = `${BASE}recipe/${recipe.id}`;
+    const url = `${BASE}${recipe.id}`;
     const metaTags = [
       `<meta property="og:title" content="${escapeHtml(recipe.name)}" />`,
       `<meta property="og:description" content="${escapeHtml(description)}" />`,
@@ -75,7 +75,7 @@ async function generate() {
     const html = template
       .replace("<title>recipes</title>", `<title>${escapeHtml(recipe.name)} — recipes</title>\n    ${metaTags}`);
 
-    const dir = join(DIST_DIR, "recipe", recipe.id);
+    const dir = join(DIST_DIR, recipe.id);
     mkdirSync(dir, { recursive: true });
     writeFileSync(join(dir, "index.html"), html);
     console.log(`Generated ${url}`);

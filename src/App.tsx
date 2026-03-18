@@ -7,7 +7,7 @@ import type { Recipe } from "./types";
 const BASE = import.meta.env.BASE_URL;
 
 function parsePath(): string | null {
-  const match = location.pathname.match(new RegExp(`^${BASE}recipe/(.+?)/?$`));
+  const match = location.pathname.match(new RegExp(`^${BASE}([0-9a-f-]{36})/?$`));
   return match ? match[1] : null;
 }
 
@@ -20,7 +20,7 @@ function App() {
     // Redirect legacy hash URLs to path-based URLs
     const hashMatch = location.hash.match(/^#\/recipe\/(.+)$/);
     if (hashMatch) {
-      history.replaceState(null, "", `${BASE}recipe/${hashMatch[1]}`);
+      history.replaceState(null, "", `${BASE}${hashMatch[1]}`);
       setSelectedId(hashMatch[1]);
     }
   }, []);
@@ -40,7 +40,7 @@ function App() {
 
   function selectRecipe(id: string | null) {
     if (id) {
-      history.pushState(null, "", `${BASE}recipe/${id}`);
+      history.pushState(null, "", `${BASE}${id}`);
     } else {
       history.pushState(null, "", BASE);
     }

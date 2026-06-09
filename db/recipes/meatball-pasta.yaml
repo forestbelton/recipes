@@ -1,0 +1,53 @@
+name: Meatball Pasta
+source: ""
+prep_time_minutes: 25
+cook_time_minutes: 18
+additional_time_minutes: 0
+servings: 2
+ingredients:
+  - name: ground beef
+    amount: 1
+    unit: lb
+  - name: breadcrumbs
+    amount: 0.25
+    unit: cup
+  - name: egg
+    amount: 1
+    unit: ""
+  - name: garlic, minced
+    amount: 3
+    unit: cloves
+  - name: grated Parmesan cheese
+    amount: 0.25
+    unit: cup
+  - name: dried Italian seasoning
+    amount: 1
+    unit: tsp
+  - name: salt and pepper
+    amount: N/A
+    unit: ""
+  - name: pasta (spaghetti, penne, or any shape)
+    amount: 8
+    unit: oz
+  - name: marinara sauce
+    amount: 24
+    unit: oz
+  - name: olive oil
+    amount: 2
+    unit: tbsp
+  - name: fresh basil (optional)
+    amount: N/A
+    unit: ""
+  - name: extra Parmesan for serving
+    amount: N/A
+    unit: ""
+steps:
+  - Mix ground beef, breadcrumbs, egg, garlic, Parmesan, Italian seasoning, salt, and pepper in a bowl.
+  - Form into 12-16 meatballs.
+  - Heat olive oil in a large skillet over medium-high heat.
+  - Brown meatballs on all sides (8-10 minutes total).
+  - Pour marinara sauce over meatballs and reduce heat to medium-low.
+  - Simmer 10-12 minutes until meatballs are cooked through.
+  - Meanwhile, cook pasta according to package directions, drain.
+  - Combine pasta and meatball sauce, toss gently.
+  - Top with fresh basil and extra Parmesan.

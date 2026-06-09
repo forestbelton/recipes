@@ -1,0 +1,47 @@
+name: Slow Cooker Pulled Pork with Homemade NC BBQ Sauce
+source: ""
+prep_time_minutes: 10
+cook_time_minutes: 480
+additional_time_minutes: 0
+servings: 5
+ingredients:
+  - name: pork shoulder
+    amount: 3.5
+    unit: lbs
+  - name: chicken or pork broth
+    amount: 1
+    unit: cup
+  - name: salt and pepper
+    amount: N/A
+    unit: ""
+  - name: burger buns
+    amount: 6
+    unit: ""
+  - name: apple cider vinegar
+    amount: 1
+    unit: cup
+  - name: ketchup
+    amount: 0.25
+    unit: cup
+  - name: brown sugar
+    amount: 3
+    unit: tbsp
+  - name: hot sauce
+    amount: 2
+    unit: tbsp
+  - name: Worcestershire sauce
+    amount: 1
+    unit: tbsp
+  - name: garlic powder
+    amount: 1
+    unit: tsp
+  - name: cayenne pepper (optional)
+    amount: 1
+    unit: tsp
+steps:
+  - Whisk together vinegar, ketchup, brown sugar, hot sauce, Worcestershire, garlic powder, and cayenne. Set aside.
+  - Season pork generously with salt and pepper.
+  - Add pork and broth to slow cooker. Cook on low for 8 hours until very tender and shreds easily.
+  - Remove pork from slow cooker, discard excess fat, shred with two forks.
+  - Return shredded pork to slow cooker, stir in NC sauce.
+  - Pile on burger buns and serve.

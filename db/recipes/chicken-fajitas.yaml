@@ -1,0 +1,48 @@
+name: Slow Cooker Chicken Fajitas
+source: ""
+prep_time_minutes: 10
+cook_time_minutes: 420
+additional_time_minutes: 0
+servings: 3
+ingredients:
+  - name: chicken breasts
+    amount: 1.5
+    unit: lbs
+  - name: bell peppers, sliced
+    amount: 2
+    unit: ""
+  - name: large onion, sliced
+    amount: 1
+    unit: ""
+  - name: fajita seasoning
+    amount: 3
+    unit: tbsp
+  - name: chicken broth
+    amount: 0.5
+    unit: cup
+  - name: lime juice
+    amount: 2
+    unit: tbsp
+  - name: flour or corn tortillas
+    amount: 8
+    unit: ""
+  - name: sour cream (optional)
+    amount: N/A
+    unit: ""
+  - name: shredded cheese (optional)
+    amount: N/A
+    unit: ""
+  - name: cilantro (optional)
+    amount: N/A
+    unit: ""
+  - name: salsa (optional)
+    amount: N/A
+    unit: ""
+  - name: jalapeños (optional)
+    amount: N/A
+    unit: ""
+steps:
+  - Add chicken, peppers, onion, fajita seasoning, broth, and lime juice to slow cooker.
+  - Cook on low for 6-8 hours (or high for 4 hours).
+  - Remove chicken and shred with two forks, return to slow cooker and stir.
+  - Warm tortillas and serve fajita mixture inside with desired toppings.
